@@ -1,11 +1,11 @@
 # import all necessary libraries
 import pandas
-from pandas.tools.plotting import scatter_matrix
-from sklearn import cross_validation
+from pandas.plotting import scatter_matrix
+from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import train_test_split
+from sklearn.model_selection import KFold
 from sklearn.metrics import matthews_corrcoef
 from sklearn.metrics import classification_report
-from sklearn.metrics import confusion_matrix
-from sklearn.metrics import accuracy_score
 from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.neighbors import KNeighborsClassifier
@@ -13,6 +13,7 @@ from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.naive_bayes import GaussianNB
 from sklearn.neural_network import MLPClassifier
 from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.metrics import accuracy_score
 
 # load the dataset (local path)
 url = "data.csv"
@@ -30,7 +31,7 @@ validation_size = 0.3
 # randomize which part of the data is training and which part is validation
 seed = 7
 # split dataset into training set (80%) and validation set (20%)
-X_train, X_validation, Y_train, Y_validation = cross_validation.train_test_split(X, Y, test_size = validation_size, random_state = seed)
+X_train, X_validation, Y_train, Y_validation = train_test_split(X, Y, test_size = validation_size, random_state = seed)
 
 # 10-fold cross validation to estimate accuracy (split data into 10 parts; use 9 parts to train and 1 for test)
 num_folds = 10
@@ -54,8 +55,8 @@ results = []
 names = []
 print("Scores for each algorithm:")
 for name, model in models:
-    kfold = cross_validation.KFold(n = num_instances, n_folds = num_folds, random_state = seed)
-    cv_results = cross_validation.cross_val_score(model, X_train, Y_train, cv = kfold, scoring = scoring)
+    kfold =  KFold(n_splits = num_folds, shuffle=True, random_state = seed)
+    cv_results = cross_val_score(model, X_train, Y_train, cv = kfold, scoring = scoring)
     results.append(cv_results)
     names.append(name)
     model.fit(X_train, Y_train)
