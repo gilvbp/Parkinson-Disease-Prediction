@@ -63,4 +63,4 @@ for name, model in models:
     predictions = model.predict(X_validation)
     print(name, accuracy_score(Y_validation, predictions)*100)
     print(matthews_corrcoef(Y_validation, predictions))
-    print()
+    print(X_train)
