@@ -28,7 +28,7 @@ criterion = nn.CrossEntropyLoss()
 # Exemplo de dados de entrada grandes (tamanho de imagem aumentado)
 batch_size = 64
 inputs = torch.randn(batch_size, 3, 512, 512).to(device)  # Batch de imagens de 512x512 pixels
-labels = torch.randint(0, 1000, (batch_size,)).to(device)  # Exemplo de rótulos (classificação de 1000 classes)
+labels = torch.randint(0, 1, (batch_size,)).to(device)  # Exemplo de rótulos (classificação de 1000 classes)
 
 # Loop de treinamento
 model.train()
